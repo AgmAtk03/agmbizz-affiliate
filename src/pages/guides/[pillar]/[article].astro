@@ -1,0 +1,105 @@
+---
+import { render } from 'astro:content';
+import ContentImage from '../../../components/ContentImage.astro';
+import EmailCapture from '../../../components/EmailCapture.astro';
+import FaqList from '../../../components/FaqList.astro';
+import RelatedArticles from '../../../components/RelatedArticles.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import {
+  articleHref,
+  getPublishedArticles,
+  getRelatedArticles,
+  requirePillar,
+  type ArticleEntry,
+  type PillarEntry,
+} from '../../../lib/collections';
+import { articleJsonLd, faqJsonLd } from '../../../lib/jsonld';
+import { guidesCrumb, homeCrumb, paths, type Crumb } from '../../../lib/paths';
+
+export async function getStaticPaths() {
+  const articles = await getPublishedArticles();
+  return Promise.all(
+    articles.map(async (article) => {
+      const pillar = await requirePillar(article.data.pillar);
+      return {
+        params: {
+          pillar: article.data.pillar,
+          article: article.data.slug,
+        },
+        props: { article, pillar },
+      };
+    }),
+  );
+}
+
+interface Props {
+  article: ArticleEntry;
+  pillar: PillarEntry;
+}
+
+const { article, pillar } = Astro.props;
+const { Content } = await render(article);
+const related = await getRelatedArticles(article);
+const path = articleHref(article);
+const date = article.data.publishDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+const crumbs: Crumb[] = [
+  homeCrumb(),
+  guidesCrumb(),
+  { name: pillar.data.title, href: paths.pillar(pillar.data.slug) },
+  { name: article.data.title, href: path },
+];
+
+const jsonLd = [articleJsonLd(article, pillar)];
+if (article.data.faq) {
+  jsonLd.push(faqJsonLd(article.data.faq));
+}
+---
+
+<BaseLayout
+  title={article.data.title}
+  description={article.data.description}
+  path={path}
+  crumbs={crumbs}
+  ogType="article"
+  image={article.data.hero?.src}
+  commercial={article.data.commercial}
+  jsonLd={jsonLd}
+>
+  <article>
+    <p class="text-[0.7rem] font-semibold tracking-[0.18em] text-accent uppercase">
+      <a class="hover:text-accent-deep" href={paths.pillar(pillar.data.slug)}>{pillar.data.title}</a>
+      {article.data.commercial && <span class="text-ink-soft"> · Commercial intent</span>}
+    </p>
+    <h1 class="mt-3 max-w-3xl font-serif text-4xl tracking-tight sm:text-5xl">
+      {article.data.title}
+    </h1>
+    <p class="mt-4 text-sm text-ink-soft">
+      <time datetime={article.data.publishDate.toISOString()}>{date}</time>
+      {' · Part of '}
+      <a class="underline underline-offset-2 hover:text-accent" href={paths.pillar(pillar.data.slug)}>
+        {pillar.data.title}
+      </a>
+    </p>
+
+    {article.data.hero && (
+      <figure class="mt-8 border border-rule">
+        <ContentImage {...article.data.hero} priority />
+      </figure>
+    )}
+
+    <div class="prose mt-8 max-w-2xl">
+      <Content />
+    </div>
+  </article>
+
+  {article.data.faq && <FaqList items={article.data.faq} />}
+  <RelatedArticles articles={related} />
+
+  <div class="mt-12 max-w-2xl">
+    <EmailCapture />
+  </div>
+</BaseLayout>

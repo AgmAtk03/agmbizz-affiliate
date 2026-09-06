@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { homeCrumb, paths } from '../lib/paths';
+import { site } from '../lib/site';
+
+const crumbs = [homeCrumb(), { name: 'Affiliate disclosure', href: paths.disclosure }];
+---
+
+<BaseLayout
+  title="Affiliate disclosure"
+  description={`${site.name} may earn a commission from qualifying purchases. This page is the standing FTC-style disclosure for the scaffold.`}
+  path={paths.disclosure}
+  crumbs={crumbs}
+  commercial
+>
+  <article class="max-w-2xl">
+    <h1 class="font-serif text-4xl tracking-tight sm:text-5xl">Affiliate disclosure</h1>
+    <p class="mt-4 text-sm text-ink-soft">Last updated September 6, 2026</p>
+
+    <div class="prose mt-8">
+      <p>
+        {site.name} is an editorial site from {site.publication}. Some links on this site are
+        <strong>affiliate links</strong>. If you click one and buy something, we may receive a
+        commission. You do not pay more because you used our link.
+      </p>
+      <h2>How we mark those links</h2>
+      <p>
+        Commercial outbound links are rendered with the <code>SponsoredLink</code> component. The
+        HTML always includes <code>rel="sponsored nofollow noopener"</code> and opens in a new tab.
+        We do not cloak destinations or swap URLs after the click with JavaScript.
+      </p>
+      <h2>What we will not do</h2>
+      <ul>
+        <li>Invent hands-on tests or star ratings we did not perform</li>
+        <li>Publish doorway pages that only exist to rank variations of one query</li>
+        <li>Hide the fact that a page can earn us money</li>
+      </ul>
+      <h2>Placeholder offers</h2>
+      <p>
+        Until a niche and a partner program are chosen, sample offers point at
+        <code>example.com</code>. Treat them as markup fixtures, not recommendations.
+      </p>
+      <h2>Questions</h2>
+      <p>
+        If a disclosure looks wrong, <a href={paths.contact}>contact the editors</a>.
+      </p>
+    </div>
+  </article>
+</BaseLayout>

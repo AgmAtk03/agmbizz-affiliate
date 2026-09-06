@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { homeCrumb, paths } from '../lib/paths';
+
+const crumbs = [homeCrumb(), { name: 'Not found', href: '/404/' }];
+---
+
+<BaseLayout
+  title="Page not found"
+  description="That URL is not in the AgmBizz guide index. Head back to the pillars."
+  path="/404/"
+  crumbs={crumbs}
+>
+  <header class="max-w-2xl">
+    <h1 class="font-serif text-4xl tracking-tight sm:text-5xl">This page is not in the issue.</h1>
+    <p class="mt-4 text-lg text-ink-soft">
+      The scaffold only publishes routes that exist in the content collections. Check the slug, or
+      start from the guide index.
+    </p>
+    <p class="mt-6">
+      <a class="font-semibold text-accent hover:text-accent-deep" href={paths.guides}>Browse guides →</a>
+    </p>
+  </header>
+</BaseLayout>

@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getFormAction } from '../lib/site';
+import { homeCrumb, paths } from '../lib/paths';
+import { site } from '../lib/site';
+
+const action = getFormAction();
+const crumbs = [homeCrumb(), { name: 'Contact', href: paths.contact }];
+---
+
+<BaseLayout
+  title="Contact the editors"
+  description={`Reach the ${site.name} / ${site.publication} desk. This form posts to PUBLIC_FORM_ACTION or a mailto fallback — no database.`}
+  path={paths.contact}
+  crumbs={crumbs}
+>
+  <article class="max-w-2xl">
+    <h1 class="font-serif text-4xl tracking-tight sm:text-5xl">Contact</h1>
+    <p class="mt-4 text-lg text-ink-soft">
+      Corrections, partnership questions, and niche-swap notes can come here. Nothing is stored
+      in this repo.
+    </p>
+
+    <form
+      class="mt-8 space-y-4"
+      method={action ? 'post' : 'get'}
+      action={action ?? 'mailto:editors@example.com'}
+    >
+      <div>
+        <label class="block text-sm font-semibold" for="contact-name">Name</label>
+        <input
+          id="contact-name"
+          name="name"
+          type="text"
+          required
+          autocomplete="name"
+          class="mt-1 w-full border border-rule bg-paper px-3 py-2"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-semibold" for="contact-email">Email</label>
+        <input
+          id="contact-email"
+          name="email"
+          type="email"
+          required
+          autocomplete="email"
+          class="mt-1 w-full border border-rule bg-paper px-3 py-2"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-semibold" for="contact-message">Message</label>
+        <textarea
+          id="contact-message"
+          name="message"
+          required
+          rows="6"
+          class="mt-1 w-full border border-rule bg-paper px-3 py-2"
+        ></textarea>
+      </div>
+      <button type="submit" class="bg-ink px-4 py-2 text-sm font-semibold tracking-wide text-paper uppercase hover:bg-moss">
+        Send
+      </button>
+    </form>
+
+    {!action && (
+      <p class="mt-4 text-sm text-ink-soft">
+        <code>PUBLIC_FORM_ACTION</code> is unset, so this form opens a mailto to
+        <code>editors@example.com</code>. Point it at Formspree (or similar) in production.
+      </p>
+    )}
+  </article>
+</BaseLayout>

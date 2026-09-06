@@ -1,0 +1,79 @@
+---
+import { render } from 'astro:content';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import ContentImage from '../../../components/ContentImage.astro';
+import FaqList from '../../../components/FaqList.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import {
+  getArticlesForPillar,
+  getPublishedPillars,
+  type PillarEntry,
+} from '../../../lib/collections';
+import { faqJsonLd } from '../../../lib/jsonld';
+import { guidesCrumb, homeCrumb, paths, type Crumb } from '../../../lib/paths';
+
+export async function getStaticPaths() {
+  const pillars = await getPublishedPillars();
+  return pillars.map((pillar) => ({
+    params: { pillar: pillar.data.slug },
+    props: { pillar },
+  }));
+}
+
+interface Props {
+  pillar: PillarEntry;
+}
+
+const { pillar } = Astro.props;
+const { Content } = await render(pillar);
+const articles = await getArticlesForPillar(pillar.data.slug);
+const path = paths.pillar(pillar.data.slug);
+const crumbs: Crumb[] = [
+  homeCrumb(),
+  guidesCrumb(),
+  { name: pillar.data.title, href: path },
+];
+const extraJsonLd = pillar.data.faq ? [faqJsonLd(pillar.data.faq)] : [];
+---
+
+<BaseLayout
+  title={pillar.data.title}
+  description={pillar.data.description}
+  path={path}
+  crumbs={crumbs}
+  image={pillar.data.hero?.src}
+  jsonLd={extraJsonLd}
+>
+  <article>
+    <p class="text-[0.7rem] font-semibold tracking-[0.2em] text-accent uppercase">
+      {pillar.data.kicker ?? 'Pillar'} · Your Niche
+    </p>
+    <h1 class="mt-3 max-w-3xl font-serif text-4xl tracking-tight sm:text-5xl">
+      {pillar.data.title}
+    </h1>
+    <p class="mt-4 max-w-2xl text-lg text-ink-soft">{pillar.data.description}</p>
+
+    {pillar.data.hero && (
+      <figure class="mt-8 border border-rule">
+        <ContentImage {...pillar.data.hero} priority />
+      </figure>
+    )}
+
+    <div class="prose mt-8 max-w-2xl">
+      <Content />
+    </div>
+  </article>
+
+  <section class="mt-12" aria-labelledby="pillar-articles">
+    <h2 id="pillar-articles" class="font-serif text-3xl">Articles in this pillar</h2>
+    {articles.length === 0 ? (
+      <p class="mt-4 text-ink-soft">No published articles yet. Add markdown under <code>src/content/articles/</code> with <code>pillar: {pillar.data.slug}</code>.</p>
+    ) : (
+      <div class="mt-4">
+        {articles.map((article) => <ArticleCard article={article} pillar={pillar} />)}
+      </div>
+    )}
+  </section>
+
+  {pillar.data.faq && <FaqList items={pillar.data.faq} />}
+</BaseLayout>

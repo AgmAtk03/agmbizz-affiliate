@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { homeCrumb, paths } from '../lib/paths';
+import { site } from '../lib/site';
+
+const crumbs = [homeCrumb(), { name: 'About', href: paths.about }];
+---
+
+<BaseLayout
+  title={`About ${site.name}`}
+  description={`${site.name} is a ${site.publication} editorial project. This about page is scaffold copy until Your Niche is chosen.`}
+  path={paths.about}
+  crumbs={crumbs}
+>
+  <article class="max-w-2xl">
+    <h1 class="font-serif text-4xl tracking-tight sm:text-5xl">About {site.name}</h1>
+    <p class="mt-6 text-lg text-ink-soft">
+      {site.name} is published by {site.publication}. The site is an affiliate-aware
+      <strong> content infrastructure</strong>, not a finished niche property.
+    </p>
+
+    <div class="prose mt-8">
+      <h2>What this is</h2>
+      <p>
+        A statically generated magazine for <em>{site.niche}</em> with room to grow to twenty
+        articles without changing the URL scheme. Pages are HTML at build time. There is no
+        client-fetched content shell, no CMS admin, and no database.
+      </p>
+      <h2>What this is not</h2>
+      <ul>
+        <li>A real product-review destination — the category is still a placeholder</li>
+        <li>A doorway network, cloaking layer, or fake-review mill</li>
+        <li>A SaaS marketing site wearing a blog hat</li>
+      </ul>
+      <h2>How we get paid later</h2>
+      <p>
+        When a real niche and partner program exist, commercial links will stay visibly marked
+        through the <code>SponsoredLink</code> component. Read the
+        <a href={paths.disclosure}>affiliate disclosure</a> for the language we already ship.
+      </p>
+    </div>
+  </article>
+</BaseLayout>
