@@ -1,0 +1,54 @@
+---
+import ArticleCard from '../../components/ArticleCard.astro';
+import PillarCard from '../../components/PillarCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  getArticlesForPillar,
+  getPublishedArticles,
+  getPublishedPillars,
+} from '../../lib/collections';
+import { guidesCrumb, homeCrumb, paths } from '../../lib/paths';
+import { site } from '../../lib/site';
+
+const pillars = await getPublishedPillars();
+const articles = await getPublishedArticles();
+const pillarsWithArticles = await Promise.all(
+  pillars.map(async (pillar) => ({
+    pillar,
+    articles: await getArticlesForPillar(pillar.data.slug),
+  })),
+);
+
+const crumbs = [homeCrumb(), guidesCrumb()];
+---
+
+<BaseLayout
+  title={`Guides for ${site.niche}`}
+  description={`All placeholder pillars and articles on ${site.name}. Replace the markdown collections when the real niche is chosen.`}
+  path={paths.guides}
+  crumbs={crumbs}
+>
+  <header class="border-b border-rule pb-8">
+    <h1 class="font-serif text-4xl tracking-tight sm:text-5xl">Guides</h1>
+    <p class="mt-4 max-w-2xl text-lg text-ink-soft">
+      Every article points up to a pillar. Every pillar lists its articles. That cluster is the
+      whole information architecture — add files, do not invent new URL schemes, when you scale toward 20 posts.
+    </p>
+  </header>
+
+  <div class="mt-8 grid gap-4 md:grid-cols-3">
+    {pillarsWithArticles.map(({ pillar, articles: pillarArticles }) => (
+      <PillarCard pillar={pillar} articles={pillarArticles} />
+    ))}
+  </div>
+
+  <section class="mt-14" aria-labelledby="all-articles">
+    <h2 id="all-articles" class="font-serif text-3xl">All published articles</h2>
+    <div class="mt-4">
+      {articles.map((article) => {
+        const pillar = pillars.find((entry) => entry.data.slug === article.data.pillar);
+        return <ArticleCard article={article} pillar={pillar} />;
+      })}
+    </div>
+  </section>
+</BaseLayout>

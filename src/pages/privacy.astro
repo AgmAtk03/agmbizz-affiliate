@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { homeCrumb, paths } from '../lib/paths';
+import { site } from '../lib/site';
+
+const crumbs = [homeCrumb(), { name: 'Privacy policy', href: paths.privacy }];
+---
+
+<BaseLayout
+  title="Privacy policy"
+  description={`How ${site.name} handles the little data a static affiliate site can collect — forms, logs, and optional analytics you add later.`}
+  path={paths.privacy}
+  crumbs={crumbs}
+>
+  <article class="max-w-2xl">
+    <h1 class="font-serif text-4xl tracking-tight sm:text-5xl">Privacy policy</h1>
+    <p class="mt-4 text-sm text-ink-soft">Last updated September 6, 2026</p>
+
+    <div class="prose mt-8">
+      <p>
+        {site.name} is a statically generated website. We do not ship a user database or accounts.
+        This policy describes the small amount of information that can still move through the
+        scaffold.
+      </p>
+      <h2>Information you send us</h2>
+      <p>
+        The email capture and contact forms post to whatever endpoint you set in
+        <code>PUBLIC_FORM_ACTION</code> (for example Formspree), or they fall back to mailto.
+        That provider’s privacy terms apply to addresses and messages. We do not store submissions
+        in this repository.
+      </p>
+      <h2>Server and platform logs</h2>
+      <p>
+        If you host on Vercel or another CDN, the platform may log IP addresses, user agents, and
+        request paths for security and operations. Review that host’s data processing terms.
+      </p>
+      <h2>Cookies and analytics</h2>
+      <p>
+        This scaffold does not set analytics cookies. If you add a script later, update this page
+        and give readers a real choice where the law requires one.
+      </p>
+      <h2>Affiliate cookies</h2>
+      <p>
+        Clicking a sponsored link may cause a merchant or network to set their own cookies so a
+        commission can be attributed. Those cookies are controlled by the destination, not by
+        {site.name}.
+      </p>
+      <h2>Contact</h2>
+      <p>
+        Privacy questions can go through the <a href={paths.contact}>contact page</a>.
+      </p>
+    </div>
+  </article>
+</BaseLayout>
