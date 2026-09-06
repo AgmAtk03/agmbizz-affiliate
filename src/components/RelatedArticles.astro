@@ -1,0 +1,26 @@
+---
+import type { ArticleEntry } from '../lib/collections';
+import { articleHref } from '../lib/collections';
+
+interface Props {
+  articles: ArticleEntry[];
+}
+
+const { articles } = Astro.props;
+---
+
+{articles.length > 0 && (
+  <aside class="mt-12 border-t border-rule pt-8">
+    <h2 class="font-serif text-2xl">More in this pillar</h2>
+    <ul class="mt-4 space-y-3">
+      {articles.map((article) => (
+        <li>
+          <a class="font-medium underline decoration-rule underline-offset-2 hover:text-accent" href={articleHref(article)}>
+            {article.data.title}
+          </a>
+          <p class="text-sm text-ink-soft">{article.data.description}</p>
+        </li>
+      ))}
+    </ul>
+  </aside>
+)}

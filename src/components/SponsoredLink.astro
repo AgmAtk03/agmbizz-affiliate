@@ -1,0 +1,23 @@
+---
+/**
+ * Always emits rel="sponsored nofollow noopener".
+ * Do not add a rel override — affiliate compliance is non-negotiable.
+ */
+interface Props {
+  href: string;
+  class?: string;
+  /** Prefer `label` in MDX so the child is not wrapped in a paragraph. */
+  label?: string;
+}
+
+const { href, class: className, label } = Astro.props;
+---
+
+<a
+  href={href}
+  rel="sponsored nofollow noopener"
+  target="_blank"
+  class:list={['sponsored-link', className]}
+>
+  {label ?? <slot />}
+</a>

@@ -1,0 +1,39 @@
+---
+import type { ArticleEntry, PillarEntry } from '../lib/collections';
+import { pillarHref } from '../lib/collections';
+
+interface Props {
+  pillar: PillarEntry;
+  articles: ArticleEntry[];
+}
+
+const { pillar, articles } = Astro.props;
+const href = pillarHref(pillar);
+---
+
+<section class="border border-rule bg-paper p-5">
+  <p class="text-[0.7rem] font-semibold tracking-[0.16em] text-accent uppercase">
+    {pillar.data.kicker ?? 'Pillar'}
+  </p>
+  <h2 class="mt-2 font-serif text-2xl leading-tight">
+    <a class="hover:text-accent" href={href}>{pillar.data.title}</a>
+  </h2>
+  <p class="mt-2 text-sm text-ink-soft">{pillar.data.description}</p>
+  <p class="mt-3 text-xs text-ink-soft">
+    {articles.length} {articles.length === 1 ? 'article' : 'articles'}
+  </p>
+  <ul class="mt-4 space-y-2 text-sm">
+    {articles.slice(0, 3).map((article) => (
+      <li>
+        <a class="underline decoration-rule underline-offset-2 hover:text-accent hover:decoration-accent" href={`/guides/${article.data.pillar}/${article.data.slug}/`}>
+          {article.data.title}
+        </a>
+      </li>
+    ))}
+  </ul>
+  <p class="mt-5">
+    <a class="text-sm font-semibold text-accent hover:text-accent-deep" href={href}>
+      Open this pillar →
+    </a>
+  </p>
+</section>
