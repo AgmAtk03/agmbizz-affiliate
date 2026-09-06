@@ -1,0 +1,28 @@
+---
+import { paths } from '../lib/paths';
+
+interface Props {
+  commercial?: boolean;
+}
+
+const { commercial = false } = Astro.props;
+---
+
+<div
+  class:list={[
+    'border-b px-4 py-2.5 text-sm leading-snug',
+    commercial
+      ? 'border-accent/30 bg-accent text-paper'
+      : 'border-banner/20 bg-banner text-paper',
+  ]}
+>
+  <p class="mx-auto max-w-5xl">
+    <span class="font-semibold tracking-wide uppercase text-[0.72rem]">Affiliate disclosure.</span>
+    {' '}
+    AgmBizz may earn a commission if you buy through links on this page. That does not change the price you pay.
+    {' '}
+    <a class="underline underline-offset-2 decoration-paper/70 hover:decoration-paper" href={paths.disclosure}>
+      Read the full disclosure
+    </a>.
+  </p>
+</div>

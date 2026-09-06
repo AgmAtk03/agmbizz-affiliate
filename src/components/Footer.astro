@@ -1,0 +1,35 @@
+---
+import { site } from '../lib/site';
+import { paths } from '../lib/paths';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-16 border-t border-rule bg-paper-deep/50">
+  <div class="mx-auto grid max-w-5xl gap-8 px-4 py-10 sm:grid-cols-3">
+    <div>
+      <p class="font-serif text-xl">{site.name}</p>
+      <p class="mt-2 text-sm text-ink-soft">
+        A {site.publication} publication. Placeholder copy for {site.niche} — replace the markdown collections when the niche is locked.
+      </p>
+    </div>
+    <div>
+      <p class="text-xs font-semibold tracking-[0.16em] text-ink-soft uppercase">Site</p>
+      <ul class="mt-3 space-y-2 text-sm">
+        <li><a class="hover:text-accent" href={paths.guides}>Guides</a></li>
+        <li><a class="hover:text-accent" href={paths.about}>About</a></li>
+        <li><a class="hover:text-accent" href={paths.contact}>Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-xs font-semibold tracking-[0.16em] text-ink-soft uppercase">Compliance</p>
+      <ul class="mt-3 space-y-2 text-sm">
+        <li><a class="hover:text-accent" href={paths.disclosure}>Affiliate disclosure</a></li>
+        <li><a class="hover:text-accent" href={paths.privacy}>Privacy policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <p class="border-t border-rule px-4 py-4 text-center text-xs text-ink-soft">
+    © {year} {site.name} / {site.publication}. White-hat affiliate infrastructure only. No cloaking, doorway pages, or fake reviews.
+  </p>
+</footer>

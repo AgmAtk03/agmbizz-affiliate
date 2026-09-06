@@ -1,0 +1,33 @@
+---
+import type { ArticleEntry, PillarEntry } from '../lib/collections';
+import { articleHref } from '../lib/collections';
+
+interface Props {
+  article: ArticleEntry;
+  pillar?: PillarEntry;
+}
+
+const { article, pillar } = Astro.props;
+const href = articleHref(article);
+const date = article.data.publishDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<article class="border-t border-rule py-5 first:border-t-0 first:pt-0">
+  <p class="text-[0.7rem] font-semibold tracking-[0.16em] text-accent uppercase">
+    {pillar ? pillar.data.title : 'Your Niche'}
+    {article.data.commercial && <span class="ml-2 text-ink-soft">· Commercial</span>}
+  </p>
+  <h3 class="mt-1 font-serif text-2xl leading-snug">
+    <a class="hover:text-accent" href={href}>{article.data.title}</a>
+  </h3>
+  <p class="mt-2 text-sm text-ink-soft">{article.data.description}</p>
+  <p class="mt-3 text-xs text-ink-soft">
+    <time datetime={article.data.publishDate.toISOString()}>{date}</time>
+    {' · '}
+    <a class="underline underline-offset-2" href={href}>Read the guide</a>
+  </p>
+</article>

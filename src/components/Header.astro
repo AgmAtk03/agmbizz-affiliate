@@ -1,0 +1,52 @@
+---
+import { site } from '../lib/site';
+import { paths } from '../lib/paths';
+
+const nav = [
+  { href: paths.guides, label: 'Guides' },
+  { href: paths.about, label: 'About' },
+  { href: paths.contact, label: 'Contact' },
+  { href: paths.disclosure, label: 'Disclosure' },
+];
+---
+
+<header class="border-b border-rule bg-paper">
+  <a
+    class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-20 focus:bg-ink focus:px-3 focus:py-2 focus:text-paper"
+    href="#main"
+  >
+    Skip to content
+  </a>
+  <div class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4">
+    <a class="group block min-w-0" href={paths.home}>
+      <p class="text-[0.68rem] font-semibold tracking-[0.22em] text-accent uppercase">
+        {site.publication}
+      </p>
+      <p class="font-serif text-2xl leading-none tracking-tight text-ink sm:text-[1.75rem]">
+        {site.name}
+      </p>
+      <p class="mt-1 truncate text-xs text-ink-soft">{site.tagline}</p>
+    </a>
+
+    <nav class="hidden items-center gap-5 text-sm font-medium text-ink-soft md:flex" aria-label="Primary">
+      {nav.map((item) => (
+        <a class="hover:text-ink" href={item.href}>{item.label}</a>
+      ))}
+    </nav>
+
+    <details class="relative md:hidden">
+      <summary class="cursor-pointer list-none border border-rule px-3 py-1.5 text-sm font-medium">
+        Menu
+      </summary>
+      <nav class="absolute right-0 z-10 mt-2 w-48 border border-rule bg-paper p-3 shadow-sm" aria-label="Mobile">
+        <ul class="space-y-2 text-sm">
+          {nav.map((item) => (
+            <li>
+              <a class="block py-1 hover:text-accent" href={item.href}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
