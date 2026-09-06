@@ -1,0 +1,28 @@
+{
+  "name": "agmbizz",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "White-hat SEO affiliate content infrastructure for AgmBizz / Dristi Astra",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1 --port 43147",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1 --port 43147",
+    "githack": "astro build && node scripts/relativize-dist.mjs",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/markdown-satteri": "^0.4.0",
+    "@astrojs/mdx": "^8.0.0",
+    "@astrojs/sitemap": "^3.7.4",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.1",
+    "tailwindcss": "^4.3.3"
+  },
+  "allowScripts": {
+    "esbuild": true
+  }
+}
